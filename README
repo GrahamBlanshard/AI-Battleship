@@ -1,0 +1,11 @@
+AI Battleship Game
+
+Author: Graham Blanshard -- graham.blanshard@gmail.com
+Website: http://www.pro-graham.com/
+
+This Github project is for an advanced version of Battleship.
+It is one player against the computer in a Java applet. The code
+was compiled using Java 6 so if you have issues running it please
+update to v6 or greater.
+
+I'll fill in this README with more data once I find time (if I ever do).
