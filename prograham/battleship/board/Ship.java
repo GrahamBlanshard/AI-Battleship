@@ -3,6 +3,8 @@
  * ---
  * Ship object to represent ships on
  * the grid.
+ * 
+ * https://github.com/GrahamBlanshard/
  */
 package prograham.battleship.board;
 

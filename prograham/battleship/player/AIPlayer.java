@@ -1,10 +1,18 @@
 package prograham.battleship.player;
 
+/**
+ * Written By Graham Blanshard
+ * https://github.com/GrahamBlanshard/
+ * 
+ * AI Player for the single player Java Battleship
+ */
+
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 
 import prograham.battleship.BattleshipGUI;
+import prograham.battleship.Helper;
 import prograham.battleship.ProbabilityMap;
 import prograham.battleship.board.Coordinate;
 import prograham.battleship.board.Grid;
@@ -14,7 +22,6 @@ public class AIPlayer extends Player {
 
 	private Coordinate lastShot;
 	private Stack<Coordinate> previousShots;
-	private String[] Alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 	private static ProbabilityMap AI;
 	
 	public AIPlayer(BattleshipGUI parent) {
@@ -56,8 +63,7 @@ public class AIPlayer extends Player {
 	            else
 	            	direction = false; // Vertical
             
-	            Coordinate shipSpot = new Coordinate(Alphabet[generator.nextInt(grid.getGridSize())],
-	            		generator.nextInt(grid.getGridSize()));	            	            
+	            Coordinate shipSpot = new Coordinate(generator.nextInt(grid.getGridSize()),generator.nextInt(grid.getGridSize()));	            	            
 			
 				successful = c.placeShip(direction, grid, shipSpot.x(), shipSpot.y(), c.getSize());
 				grid.addShip(c.shipCoordsToGrid());						
@@ -126,17 +132,17 @@ public class AIPlayer extends Player {
 						}			
 					} else { //We know it is horizontal		
 						direction = false;
-						int xloc1 = Coordinate.toInt(x1,g.getGridSize());	//We need to convert the X coordinates to integers
-						int xloc2 = Coordinate.toInt(x2,g.getGridSize());
+						int xloc1 = Helper.toInt(x1,g.getGridSize());	//We need to convert the X coordinates to integers
+						int xloc2 = Helper.toInt(x2,g.getGridSize());
 			
 						if (xloc1 > xloc2) { //Right		
 							if ((xloc1+1) < g.getGridSize()) {
-								guess = new Coordinate(Alphabet[xloc1+1],y1);
+								guess = new Coordinate(xloc1+1,y1);
 								validShot = g.fire(guess);
 							}	
 						} else { //Left			
 							if ((xloc1-1) >= 0) {				
-								guess = new Coordinate(Alphabet[xloc1-1],y1);
+								guess = new Coordinate(xloc1-1,y1);
 								validShot = g.fire(guess);
 							}
 						}						
@@ -157,13 +163,13 @@ public class AIPlayer extends Player {
 							//Switch to a horizontal path from last known hit
 							if(direction) {
 								do {					
-									int xloc = Coordinate.toInt(x1,g.getGridSize());											
+									int xloc = Helper.toInt(x1,g.getGridSize());											
 									if(LDorUR == 0) { //Go Left
 										if((xloc-1) < 0) {
 											validShot = 0;
 											LDorUR = 1;
 										} else { //Left was invalid, go right instead
-											guess = new Coordinate(Alphabet[xloc-1],y1);
+											guess = new Coordinate(xloc-1,y1);
 											validShot = g.fire(guess);
 											if (validShot == 0) //That was an invalid guess!
 												LDorUR = 1;
@@ -173,7 +179,7 @@ public class AIPlayer extends Player {
 											validShot = 0;
 											LDorUR = 0;
 										} else {//Right failed, go left							
-											guess = new Coordinate(Alphabet[xloc+1],y1);
+											guess = new Coordinate(xloc+1,y1);
 											validShot = g.fire(guess);
 											if (validShot == 0) //That was an invalid guess!
 												LDorUR = 0;
@@ -217,18 +223,18 @@ public class AIPlayer extends Player {
 		
 					switch(newDir) { 		
 					case 0: // Left
-						xloc = Coordinate.toInt(lastShot.x(),g.getGridSize());
+						xloc = Helper.toInt(lastShot.x(),g.getGridSize());
 			
 						if ((xloc-1) >= 0) { //Is in bounds, set new X			
-							guess = new Coordinate(Alphabet[xloc-1],lastShot.y());
+							guess = new Coordinate(xloc-1,lastShot.y());
 							validShot = g.fire(guess);								 
 						}																				
 						break;
 					case 1: // Right
-						xloc = Coordinate.toInt(lastShot.x(),g.getGridSize());
+						xloc = Helper.toInt(lastShot.x(),g.getGridSize());
 			
 						if ((xloc+1) < g.getGridSize()) {//Is in bounds, set new X
-							guess = new Coordinate(Alphabet[xloc+1],lastShot.y());
+							guess = new Coordinate(xloc+1,lastShot.y());
 							validShot = g.fire(guess);							 
 						}		
 						break;

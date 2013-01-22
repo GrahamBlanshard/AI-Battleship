@@ -3,9 +3,9 @@
  * Author: Graham Blanshard
  * --- --- --- --- ---
  * This file facilitates the HumanPlayer functions
- * with the game board. First version of the "fire"
- * method was written with the help of Kendra
- * Cunningham. 
+ * with the game board. 
+
+	https://github.com/GrahamBlanshard/
  */
 package prograham.battleship.player;
 

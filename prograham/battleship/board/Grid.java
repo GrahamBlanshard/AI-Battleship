@@ -1,7 +1,9 @@
 /**
  * Console based Battleship game
- * Written by: Graham Blanshard & Kendra Cunningham
+ * Written by: Graham Blanshard
  * Written for: ENSE350 - University of Regina - Winter 2010
+ * Additions:   ENSE440 - University of Regina - Something not Winter 2010
+ * 				More advanced AI as well as some logic/game fixes in this update
  * 
  * Grid.java
  * This file contains functions for the users to work with the grid objects. 
@@ -17,6 +19,8 @@
  * addShip		- Adds a ship to the grid. Takes coordinates, direction and size
  * 					relies on isFree() to determine if the value is appropriate
  * fire			- Fire a shot on the grid. Checks for hit/miss
+ * 
+ * https://github.com/GrahamBlanshard/
  */
 
 package prograham.battleship.board;
@@ -25,11 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
+import prograham.battleship.Helper;
 import prograham.battleship.player.Player;
 
 public class Grid {
-	
-	private String[] Alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+
 	
 	private HashMap<String, String> coords;	
 	private Player gridOwner;
@@ -72,11 +76,10 @@ public class Grid {
 	
 	public int probCheck(Coordinate coordinate)
 	{
-		if (coordinate.x().equals("INVALID") || 
-				(coordinate.y() < 0) || 
-				(coordinate.y() > gridSize) ||
-				(coordinate.xint() > gridSize))
+		if (coordinate.x().equals("INVALID") || (coordinate.y() < 0) || 
+		   (coordinate.y() > gridSize) ||	(coordinate.xint() > gridSize)) {
 			return 1;
+		}
 		
 		if(coords.containsKey(coordinate.get())) { 	
 			if(coords.get(coordinate.get()).equals("*")) {			
@@ -99,8 +102,8 @@ public class Grid {
 		//Find the location of X in the alphabet array:
 		int xloc;
 		
-		for (xloc = 0; xloc < Alphabet.length; xloc++)
-			if (Alphabet[xloc].equals(x.toUpperCase()))
+		for (xloc = 0; xloc < Helper.Alphabet.length; xloc++)
+			if (xloc == Helper.toInt(x))
 				break;
 		
 		//Is it outside the grid's bounds?
@@ -138,7 +141,6 @@ public class Grid {
 	 */
 	public boolean addShip(String x, Integer y, boolean dir, int size, String name)
 	{
-		//TODO: Once all ships are placed, grab their coordinates and place them on the grid;
 		return gridOwner.placeShip(name, size, dir, this, x, y);
 	}
 	
@@ -300,14 +302,23 @@ public class Grid {
 	public int[] getShipSizes()
 	{
 		List<Ship> ships = gridOwner.getShips();
+		int aliveShips = 0;
 		int[] sizes = new int[ships.size()];
-		int i = 0;
 		
 		for (Ship s : ships) {
-			sizes[i] = s.getSize();
-			i++;
+			sizes[aliveShips] = s.getSize();
+			
+			if (!s.sunk()) {
+				aliveShips++;
+			}
 		}
 		
-		return sizes;	
+		int[] finalSizes = new int[aliveShips];
+		
+		for (int i = 0; i < aliveShips; i++) {
+			finalSizes[i] = sizes[i];
+		}
+	
+		return finalSizes;
 	}
 }

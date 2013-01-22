@@ -1,5 +1,10 @@
 package prograham.battleship.player;
 
+/**
+ * Written by Graham Blanshard
+ * https://github.com/GrahamBlanshard/
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

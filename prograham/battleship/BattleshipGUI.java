@@ -1,8 +1,8 @@
 /****
  * Java Battleship
  * --
- * Applet code written by Kendra Cunningham (www.cunningk.ca)
- * Small modifications/additions by Graham Blanshard (www.pro-graham.com)
+ * Additions by Graham Blanshard
+ * https://github.com/GrahamBlanshard/
  */
 package prograham.battleship;
 
@@ -72,7 +72,6 @@ public class BattleshipGUI extends javax.swing.JApplet {
 									{"Submarine", "3"}, 
 									{"Patrol Boat", "2"} 
 								};
-    private String[] Alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     /** 
      * Initializes the applet 
      */
@@ -95,8 +94,8 @@ public class BattleshipGUI extends javax.swing.JApplet {
         	int column = r.nextInt(battle.grid().getGridSize());
         	int row = r.nextInt(battle.grid().getGridSize());
         	
-	        computer.grid().fire(new Coordinate(Coordinate.toAlpha(column),row));
-	        battle.grid().fire(new Coordinate(Coordinate.toAlpha(column),row));
+	        computer.grid().fire(new Coordinate(column,row));
+	        battle.grid().fire(new Coordinate(column,row));
 	        jTable1.setValueAt(MISS, row, column);
 	        jTable2.setValueAt(MISS, row, column);
         }
@@ -116,7 +115,7 @@ public class BattleshipGUI extends javax.swing.JApplet {
             if(orientation == 0)
                 direction = true; // Horizontal
             
-            if(battle.grid().addShip(Coordinate.toAlpha(x), y, direction, Integer.parseInt(ships[count][1]), ships[count][0])) {
+            if(battle.grid().addShip(Helper.toAlpha(x), y, direction, Integer.parseInt(ships[count][1]), ships[count][0])) {
             	printToPane("Ship added.\n");
                 
             	//Draw the changes to the grid
@@ -201,14 +200,14 @@ public class BattleshipGUI extends javax.swing.JApplet {
             		printToPane("Please place your ships before firing at the opponent.\n");
             	else { //Taking a shot
                 	boolean validShot = true;
-                	printToPane("You fired at " + Coordinate.toAlpha(column) + row);
+                	printToPane("You fired at " + Helper.toAlpha(column) + row);
                 	//Take the shot
-                	int i = computer.grid().fire(new Coordinate(Coordinate.toAlpha(column),row));
+                	int i = computer.grid().fire(new Coordinate(column,row));
                 
 	                if(i == 2) { //A hit
 	                    jTable2.setValueAt(HIT, row, column);
 	                    printToPane(" and hit!\n");
-	                    battle.fire(new Coordinate(Coordinate.toAlpha(column),row), computer.grid());
+	                    battle.fire(new Coordinate(column,row), computer.grid());
 	                }
                 
 	                if(i == 0) { //Invalid selection
@@ -231,7 +230,7 @@ public class BattleshipGUI extends javax.swing.JApplet {
 	                    int cRow = lastShot.y(); //Grab Y, Convert to row num
 	
 	                    for (int j = 0; j < 10; j++) {
-	                    	if (Alphabet[j].equals(cX.toUpperCase())) {
+	                    	if (j == Helper.toInt(cX)) {
 	                            xloc = j;
 	                            break;
 	                        }
@@ -255,7 +254,7 @@ public class BattleshipGUI extends javax.swing.JApplet {
             			//Reveal the computer's ships
             			for (Ship s : computer.getShips()) {
             				for (Coordinate c : s.getCoords()) {
-            					jTable2.setValueAt(SHIP, c.y(), Coordinate.toInt(c.x()));
+            					jTable2.setValueAt(SHIP, c.y(), Helper.toInt(c.x()));
             				}
             			}
             			

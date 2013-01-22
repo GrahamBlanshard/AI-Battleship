@@ -3,6 +3,8 @@
  * *** *** *** ***
  * This code creates a coordinate value
  * which can be used on the grids
+ * 
+ *	https://github.com/GrahamBlanshard
  */
 package prograham.battleship.board;
 
@@ -10,11 +12,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import prograham.battleship.Helper;
+
 public class Coordinate {
 	
 	private String x;
 	private Integer y;
-	private String[] Alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 	
 	/**
 	 * Constructor for a random coordinate
@@ -22,7 +25,7 @@ public class Coordinate {
 	public Coordinate()
 	{
 		Random r = new Random();
-		this.x = Alphabet[r.nextInt(10)];
+		this.x = Helper.Alphabet[r.nextInt(10)];
 		this.y = r.nextInt(10);
 	}
 	
@@ -34,6 +37,11 @@ public class Coordinate {
 	public Coordinate(String x, Integer y)
 	{
 		this.x = x;
+		this.y = y;
+	}
+	
+	public Coordinate(Integer x, Integer y) {
+		this.x = Helper.toAlpha(x);
 		this.y = y;
 	}
 	
@@ -59,8 +67,8 @@ public class Coordinate {
 	
 	public int xint()
 	{
-		for (int i = 0; i < Alphabet.length; i++) {
-			if (x.equals(Alphabet[i])) {
+		for (int i = 0; i < Helper.Alphabet.length; i++) {
+			if (x.equals(Helper.Alphabet[i])) {
 				return i;
 			}
 		}
@@ -114,48 +122,5 @@ public class Coordinate {
 	@Override public int hashCode()
 	{
 		return (x.hashCode() + y.hashCode());
-	}
-	
-	/**
-	 * Finds the number representing the letter in the alphabet
-	 * @param let letter to search for
-	 * @return the index of the Alphabet array or -1 if not found
-	 */
-	public static int toInt(String s)
-	{
-		String[] Alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-		for (int i = 0; i < Alphabet.length; i++) {
-			if (s.equals(Alphabet[i]))
-				return i;
-		}
-		
-		return -1;
-	}
-	
-	/**
-	 * Finds the number representing the letter in the alphabet
-	 * @param let letter to search for
-	 * @return the index of the Alphabet array or -1 if not found
-	 */
-	public static int toInt(String s, int n)
-	{
-		String[] Alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-		for (int i = 0; i < Alphabet.length && i < n; i++) {
-			if (s.equals(Alphabet[i]))
-				return i;
-		}
-		
-		return -1;
-	}
-	
-	/**
-	 * Converts an integer value to its alphabet value
-	 * @param x The integer to convert to a alphabet value. i.e. 0 = A, 1 = B
-	 * @return The letter
-	 */
-	public static String toAlpha(int n)
-	{
-		String[] Alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-		return Alphabet[n];
-	}
+	}	
 }
